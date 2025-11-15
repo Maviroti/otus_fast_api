@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="div-form">
+    <form method="post" action="/edit_task/{{ task_id }}/" id="taskForm">
+        <div class="mb-3">
+            <input type="text" class="form-control" id="user" name="user" value="{{ task.user }}"
+                data-original="{{ task.user }}">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="title" name="title" value="{{ task.title }}"
+                data-original="{{ task.title }}">
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control my-textarea" id="description" name="description"
+                data-original="{{ task.description }}">{{ task.description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <input type="date" class="form-control" id="end_time" name="end_time"
+                value="{{ task.end_time | convert_time_format }}"
+                data-original="{{ task.end_time | convert_time_format }}">
+        </div>
+
+        <button type=" submit" class="btn btn-primary" id="submitBtn" disabled>Сохранить</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('taskForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const inputs = form.querySelectorAll('input, textarea, select');
+
+        // Функция проверки изменений
+        function checkFormChanges() {
+            let hasChanges = false;
+
+            inputs.forEach(input => {
+                const originalValue = input.getAttribute('data-original') || '';
+                const currentValue = input.value;
+
+                if (currentValue !== originalValue) {
+                    hasChanges = true;
+                }
+            });
+
+            // Включаем/выключаем кнопку
+            submitBtn.disabled = !hasChanges;
+        }
+
+        // Слушаем изменения во всех полях
+        inputs.forEach(input => {
+            input.addEventListener('input', checkFormChanges);
+            input.addEventListener('change', checkFormChanges);
+        });
+
+        // Первоначальная проверка
+        checkFormChanges();
+    });
+</script>
+
+{% endblock %}

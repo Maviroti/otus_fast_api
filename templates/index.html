@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% if active_page == 'index' %}
+<div class="d-grid gap-2 add-btn">
+    <a class="btn btn-success" href="/add_task/" role="button">Создать задачу</a>
+</div>
+{% endif %}
+<div class="row">
+    {% for task in tasks %}
+    <div class="col-sm-6">
+        <div class="card mb-3">
+            <div class="card-header bg-transparent">{{task.user}}</div>
+            <div class="card-body">
+                <h5 class="card-title">{{task.title}}</h5>
+                <p class="card-text">{{task.description}}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <span>Срок до: {{task.end_time}}</span>
+                <a class="btn btn-primary btn-sm" href="/tasks/{{ loop.index0 }}" role="button">Открыть</a>
+                <a class="btn btn-warning btn-sm" href="/edit_task/{{ loop.index0 }}" role="button">Изменить</a>
+                <a class="btn btn-danger btn-sm" href="#"
+                    onclick="event.preventDefault(); if(confirm('Удалить задачу?')) fetch('/del_task/{{ loop.index0 }}', {method: 'DELETE'}).then(() => window.location.reload())"
+                    role="button">
+                    Удалить
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
