@@ -97,6 +97,7 @@ async def edit_task(
 
 @router.delete("/del_task/{task_id}")
 async def delete_task(task_id: int):
+    """Метод для удаления задачи"""
     if 0 <= task_id < len(task_list):
         del task_list[task_id]
         return {"message": "Task deleted successfully"}
