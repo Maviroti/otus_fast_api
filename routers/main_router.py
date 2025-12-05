@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Query
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from models import task_list, Task
+from schemas.task import task_list, TaskBaseSchema
 from datetime import date
 
 
@@ -16,7 +16,7 @@ async def index(request: Request):
     """Выводим список тасок"""
     context = {
         "request": request,
-        "active_page": 'index',
+        "active_page": "index",
         "tasks": task_list,
     }
     return templates.TemplateResponse("index.html", context)
@@ -30,7 +30,7 @@ async def today(request: Request):
     res = [task for task in task_list if task.end_time == today]
     context = {
         "request": request,
-        "active_page": 'today',
+        "active_page": "today",
         "tasks": res,
     }
     return templates.TemplateResponse("index.html", context)
@@ -41,6 +41,6 @@ async def about(request: Request):
     """Выводим страницу about"""
     context = {
         "request": request,
-        "active_page": 'about',
+        "active_page": "about",
     }
     return templates.TemplateResponse("about.html", context)
