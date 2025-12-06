@@ -1,0 +1,41 @@
+services:
+  pg:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      PGDATA: /var/lib/postgresql/17/docker
+      TZ: "Europe/Moscow"
+      PGTZ: "Europe/Moscow"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+
+  app:
+    build:
+      dockerfile: docker-build/app/Dockerfile
+      context: ./
+    environment:
+      TASKER_APP__DB__HOST: pg
+      TASKER_APP__DB__DATABASE: ${PG_DB}
+      TASKER_APP__DB__USERNAME: ${PG_USER}
+      TASKER_APP__DB__PASSWORD: ${PG_PASSWORD}
+      TZ: "Europe/Moscow"
+    ports:
+      - "8000:8000"
+    command:
+      - python
+      - app.py
+    depends_on:
+      pg:
+        condition: service_healthy
+
+volumes:
+  pg_data:
