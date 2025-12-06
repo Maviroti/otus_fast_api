@@ -1,36 +1,28 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Optional
+from datetime import datetime
 
 
 class TaskBaseSchema(BaseModel):
-    title: str
-    user: str
-    description: str
-    end_time: str
+    title: str = Field(..., min_length=1, max_length=150)
+    user_name: str = Field(..., min_length=1, max_length=100)
+    body: str = Field(default="", max_length=500)
+    end_date: datetime
 
 
-task_list = [
-    TaskBaseSchema(
-        title="Разработка FastAPI приложения",
-        user="Вася Иванов",
-        description="Разработать приложение по данным из урока",
-        end_time="12.11.2025",
-    ),
-    TaskBaseSchema(
-        title="Code-rev",
-        user="Антон Антонов",
-        description="Проверить код FastAPI приложения",
-        end_time="13.11.2025",
-    ),
-    TaskBaseSchema(
-        title="Тестирование FastAPI приложения",
-        user="Иван Первый",
-        description="Проверить работу приложения и завести баги",
-        end_time="14.11.2025",
-    ),
-    TaskBaseSchema(
-        title="Подготовка требований для FastAPI приложения версии 2.0",
-        user="Кирилл Котов",
-        description="Написать требования ко второй версии приложения, с учётом новых фич",
-        end_time="15.11.2025",
-    ),
-]
+class TaskCreateSchema(TaskBaseSchema):
+    pass
+
+
+class TaskUpdateSchema(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=150)
+    user_name: Optional[str] = Field(None, min_length=1, max_length=100)
+    body: Optional[str] = Field(None, max_length=500)
+    end_date: Optional[datetime] = None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TaskReadSchema(TaskBaseSchema):
+    id: int
+    created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
