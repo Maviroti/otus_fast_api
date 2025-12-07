@@ -7,9 +7,9 @@
         {{task.title}}
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{task.user}}</li>
-        <li class="list-group-item">{{task.description}}</li>
-        <li class="list-group-item">{{task.end_time}}</li>
+        <li class="list-group-item">{{task.user_name}}</li>
+        <li class="list-group-item">{{task.body}}</li>
+        <li class="list-group-item">{{task.end_date.strftime('%d.%m.%Y')}}</li>
     </ul>
 </div>
 

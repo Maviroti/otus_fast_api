@@ -3,23 +3,23 @@
 
 {% block content %}
 <div class="div-form">
-    <form method="post" action="/edit_task/{{ task_id }}/" id="taskForm">
+    <form method="post" action="/tasks/edit/{{ task_id }}/" id="taskForm">
         <div class="mb-3">
-            <input type="text" class="form-control" id="user" name="user" value="{{ task.user }}"
-                data-original="{{ task.user }}">
+            <input type="text" class="form-control" id="user_name" name="user_name" value="{{ task.user_name }}"
+                data-original="{{ task.user_name }}">
         </div>
         <div class="mb-3">
             <input type="text" class="form-control" id="title" name="title" value="{{ task.title }}"
                 data-original="{{ task.title }}">
         </div>
         <div class="mb-3">
-            <textarea class="form-control my-textarea" id="description" name="description"
-                data-original="{{ task.description }}">{{ task.description }}</textarea>
+            <textarea class="form-control my-textarea" id="body" name="body"
+                data-original="{{ task.body }}">{{ task.body }}</textarea>
         </div>
         <div class="mb-3">
-            <input type="date" class="form-control" id="end_time" name="end_time"
-                value="{{ task.end_time | convert_time_format }}"
-                data-original="{{ task.end_time | convert_time_format }}">
+            <input type="date" class="form-control" id="end_date" name="end_date"
+                value="{{ task.end_date.strftime('%Y-%m-%d') if task.end_date else '' }}"
+                data-original="{{ task.end_date.strftime('%Y-%m-%d') if task.end_date else '' }}">
         </div>
 
         <button type=" submit" class="btn btn-primary" id="submitBtn" disabled>Сохранить</button>
